@@ -1,7 +1,7 @@
 package models
 
 import (
-	"SendGrid/errors"
+	"go.mod/errors"
 )
 
 type GridEmail struct {
