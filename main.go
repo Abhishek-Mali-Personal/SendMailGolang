@@ -17,6 +17,11 @@ func init() {
 }
 
 func main() {
+	//GridEmailExample()
+	MailGunByExample()
+}
+
+func GridEmailExample() {
 	var email models.GridEmail
 	errorSettingKey := email.SetSendGridAPIKey(os.Getenv("SENDGRID_API_KEY"))
 	if errorSettingKey != nil {
@@ -24,7 +29,7 @@ func main() {
 	}
 	email.SetFromName(os.Getenv("FROM_NAME"))
 	email.SetFromEmail(os.Getenv("FROM_EMAIL"))
-	errorSettingEmail := email.Email(
+	errorSettingEmail := email.GridEmail(
 		"",
 		"",
 		"Test Purpose",
@@ -44,4 +49,19 @@ func main() {
 		fmt.Println(response.Body)
 		fmt.Println(response.Headers)
 	}
+}
+
+func MailGunByExample() {
+	var email models.MailGun
+	email.SetPrivateAPIKey(os.Getenv("PRIVATE_KEY"))
+	email.SetDomainName(os.Getenv("DOMAIN_NAME"))
+	errorSettingEmail := email.MailGun("abhishek.m@simformsolutions.com", "Congratulations ", "<h1>This is the test</h1>", "kishan.m@simformsolutions.com")
+	if errorSettingEmail != nil {
+		log.Println(errorSettingEmail)
+	}
+	resp, id, err := SendMail.ByMailGun(email)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("ID: %s Resp: %s\n", id, resp)
 }

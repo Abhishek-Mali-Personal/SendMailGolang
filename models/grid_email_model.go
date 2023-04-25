@@ -15,7 +15,7 @@ type GridEmail struct {
 	htmlContent      string
 }
 
-func (email *GridEmail) Email(fromName, fromEmail, subject, toName, toEmail, contentType, content string) (err error) {
+func (email *GridEmail) GridEmail(fromName, fromEmail, subject, toName, toEmail, contentType, content string) (err error) {
 	if len(email.sendGridAPIKey) != 0 {
 		email.SetFromName(fromName)
 		email.SetFromEmail(fromEmail)
@@ -30,7 +30,7 @@ func (email *GridEmail) Email(fromName, fromEmail, subject, toName, toEmail, con
 		}
 		err = nil
 	} else {
-		err = errors.EmptySendGridAPIKeyError
+		err = errors.EmptyAPIKeyError
 	}
 	return
 }
@@ -88,7 +88,7 @@ func (email *GridEmail) SetSendGridAPIKey(sendGridAPIKey string) (err error) {
 		email.sendGridAPIKey = sendGridAPIKey
 		err = nil
 	} else {
-		err = errors.EmptySendGridAPIKeyError
+		err = errors.EmptyAPIKeyError
 	}
 	return
 }
