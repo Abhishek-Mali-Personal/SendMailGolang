@@ -5,29 +5,19 @@ import (
 )
 
 type GridEmail struct {
-	fromEmail        string
-	fromName         string
-	subject          string
-	toName           string
-	toEmail          string
-	sendGridAPIKey   string
-	plainTextContent string
-	htmlContent      string
+	email          Email
+	senderName     string
+	recipientName  string
+	sendGridAPIKey string
+	contentType    string
 }
 
-func (email *GridEmail) GridEmail(fromName, fromEmail, subject, toName, toEmail, contentType, content string) (err error) {
+func (email *GridEmail) GridEmail(senderName, senderEmail, subject, recipientName, recipientEmail, contentType, body string) (err error) {
 	if len(email.sendGridAPIKey) != 0 {
-		email.SetFromName(fromName)
-		email.SetFromEmail(fromEmail)
-		email.setSubject(subject)
-		email.setToName(toName)
-		email.setToEmail(toEmail)
-		switch contentType {
-		case "plain-text-content":
-			email.setPlainTextContent(content)
-		case "html-content":
-			email.setHtmlContent(content)
-		}
+		email.SetSenderName(senderName)
+		email.setRecipientName(recipientName)
+		email.setEmail(senderEmail, subject, body, recipientEmail)
+		email.setContentType(contentType)
 		err = nil
 	} else {
 		err = errors.EmptyAPIKeyError
@@ -35,51 +25,19 @@ func (email *GridEmail) GridEmail(fromName, fromEmail, subject, toName, toEmail,
 	return
 }
 
-func (email *GridEmail) setPlainTextContent(plainTextContent string) {
-	if len(plainTextContent) != 0 {
-		email.plainTextContent = plainTextContent
+func (email *GridEmail) SetSenderName(senderName string) {
+	if len(senderName) != 0 {
+		email.senderName = senderName
+	} else if len(email.GetSenderName()) == 0 {
+		email.senderName = "Unknown"
 	}
 }
 
-func (email *GridEmail) setHtmlContent(htmlContent string) {
-	if len(htmlContent) != 0 {
-		email.htmlContent = htmlContent
-	}
-}
-
-func (email *GridEmail) SetFromEmail(fromEmail string) {
-	if len(fromEmail) != 0 {
-		email.fromEmail = fromEmail
-	}
-}
-
-func (email *GridEmail) SetFromName(fromName string) {
-	if len(fromName) != 0 {
-		email.fromName = fromName
-	} else if len(email.GetFromName()) == 0 {
-		email.fromName = "Unknown"
-	}
-}
-
-func (email *GridEmail) setToEmail(toEmail string) {
-	if len(toEmail) != 0 {
-		email.toEmail = toEmail
-	}
-}
-
-func (email *GridEmail) setToName(toName string) {
-	if len(toName) != 0 {
-		email.toName = toName
+func (email *GridEmail) setRecipientName(recipientName string) {
+	if len(recipientName) != 0 {
+		email.recipientName = recipientName
 	} else {
-		email.toName = "Unknown"
-	}
-}
-
-func (email *GridEmail) setSubject(subject string) {
-	if len(subject) != 0 {
-		email.subject = subject
-	} else {
-		email.subject = "Welcome to Grid GridEmail Functionality Thanks for using it."
+		email.recipientName = "Unknown"
 	}
 }
 
@@ -93,34 +51,39 @@ func (email *GridEmail) SetSendGridAPIKey(sendGridAPIKey string) (err error) {
 	return
 }
 
+func (email *GridEmail) setContentType(contentType string) {
+	if len(contentType) != 0 {
+		email.contentType = contentType
+	}
+}
+
+func (email *GridEmail) setEmail(sender, subject, body, recipient string) {
+	if len(sender) != 0 && len(subject) != 0 && len(body) != 0 && len(recipient) != 0 {
+		email.email.Email(sender, subject, body, recipient)
+	}
+}
+
+func (email *GridEmail) GetEmail() map[string]string {
+	var eMail = map[string]string{}
+	eMail["sender"] = email.email.GetSender()
+	eMail["recipient"] = email.email.GetRecipient()
+	eMail["body"] = email.email.GetBody()
+	eMail["subject"] = email.email.GetSubject()
+	return eMail
+}
+
+func (email *GridEmail) GetContentType() string {
+	return email.contentType
+}
+
 func (email *GridEmail) GetSendGridAPIKey() string {
 	return email.sendGridAPIKey
 }
 
-func (email *GridEmail) GetSubject() string {
-	return email.subject
+func (email *GridEmail) GetSenderName() string {
+	return email.senderName
 }
 
-func (email *GridEmail) GetFromName() string {
-	return email.fromName
-}
-
-func (email *GridEmail) GetFromEmail() string {
-	return email.fromEmail
-}
-
-func (email *GridEmail) GetToName() string {
-	return email.toName
-}
-
-func (email *GridEmail) GetToEmail() string {
-	return email.toEmail
-}
-
-func (email *GridEmail) GetPlainTextContent() string {
-	return email.plainTextContent
-}
-
-func (email *GridEmail) GetHtmlContent() string {
-	return email.htmlContent
+func (email *GridEmail) GetRecipientName() string {
+	return email.recipientName
 }

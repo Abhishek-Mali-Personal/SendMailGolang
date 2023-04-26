@@ -9,10 +9,11 @@ import (
 
 func ByMailGun(email models.MailGun) (msg, id string, err error) {
 	mg := mailgun.NewMailgun(email.GetDomainName(), email.GetPrivateAPIKey())
-	sender := email.GetSender()
-	subject := email.GetSubject()
-	body := email.GetBody()
-	recipient := email.GetRecipient()
+	eMail := email.GetEmail()
+	sender := eMail["sender"]
+	subject := eMail["subject"]
+	body := eMail["body"]
+	recipient := eMail["recipient"]
 	message := mg.NewMessage(sender, subject, body, recipient)
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
 	defer cancel()

@@ -10,11 +10,20 @@ import (
 
 func ByGrid(email models.GridEmail) (response *rest.Response, err error) {
 	if len(email.GetSendGridAPIKey()) != 0 {
-		from := mail.NewEmail(email.GetFromName(), email.GetFromEmail())
-		subject := email.GetSubject()
-		to := mail.NewEmail(email.GetToName(), email.GetToEmail())
-		plainTextContent := email.GetPlainTextContent()
-		htmlContent := email.GetHtmlContent()
+		eMail := email.GetEmail()
+		from := mail.NewEmail(email.GetSenderName(), eMail["sender"])
+		subject := eMail["subject"]
+		to := mail.NewEmail(email.GetRecipientName(), eMail["recipient"])
+		var (
+			plainTextContent string
+			htmlContent      string
+		)
+		switch email.GetContentType() {
+		case "plain-text-content":
+			plainTextContent = eMail["body"]
+		case "html-content":
+			htmlContent = eMail["body"]
+		}
 		message := mail.NewSingleEmail(from, subject, to, plainTextContent, htmlContent)
 		client := sendgrid.NewSendClient(email.GetSendGridAPIKey())
 		response, err = client.Send(message)
