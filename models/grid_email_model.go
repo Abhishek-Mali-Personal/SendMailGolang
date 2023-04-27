@@ -5,15 +5,14 @@ import (
 )
 
 type GridEmail struct {
-	email          Email
-	senderName     string
-	recipientName  string
-	sendGridAPIKey string
-	contentType    string
+	Email
+	senderName    string
+	recipientName string
+	contentType   string
 }
 
 func (email *GridEmail) GridEmail(senderName, senderEmail, subject, recipientName, recipientEmail, contentType, body string) (err error) {
-	if len(email.sendGridAPIKey) != 0 {
+	if len(email.GetAPIKey()) != 0 {
 		email.SetSenderName(senderName)
 		email.setRecipientName(recipientName)
 		email.setEmail(senderEmail, subject, body, recipientEmail)
@@ -41,16 +40,6 @@ func (email *GridEmail) setRecipientName(recipientName string) {
 	}
 }
 
-func (email *GridEmail) SetSendGridAPIKey(sendGridAPIKey string) (err error) {
-	if len(sendGridAPIKey) != 0 {
-		email.sendGridAPIKey = sendGridAPIKey
-		err = nil
-	} else {
-		err = errors.EmptyAPIKeyError
-	}
-	return
-}
-
 func (email *GridEmail) setContentType(contentType string) {
 	if len(contentType) != 0 {
 		email.contentType = contentType
@@ -59,25 +48,21 @@ func (email *GridEmail) setContentType(contentType string) {
 
 func (email *GridEmail) setEmail(sender, subject, body, recipient string) {
 	if len(sender) != 0 && len(subject) != 0 && len(body) != 0 && len(recipient) != 0 {
-		email.email.Email(sender, subject, body, recipient)
+		email.Email.Email(sender, subject, body, recipient)
 	}
 }
 
 func (email *GridEmail) GetEmail() map[string]string {
 	var eMail = map[string]string{}
-	eMail["sender"] = email.email.GetSender()
-	eMail["recipient"] = email.email.GetRecipient()
-	eMail["body"] = email.email.GetBody()
-	eMail["subject"] = email.email.GetSubject()
+	eMail["sender"] = email.GetSender()
+	eMail["recipient"] = email.GetRecipient()
+	eMail["body"] = email.GetBody()
+	eMail["subject"] = email.GetSubject()
 	return eMail
 }
 
 func (email *GridEmail) GetContentType() string {
 	return email.contentType
-}
-
-func (email *GridEmail) GetSendGridAPIKey() string {
-	return email.sendGridAPIKey
 }
 
 func (email *GridEmail) GetSenderName() string {

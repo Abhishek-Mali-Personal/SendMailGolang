@@ -23,15 +23,13 @@ func main() {
 
 func GridEmailExample() {
 	var email models.GridEmail
-	errorSettingKey := email.SetSendGridAPIKey(os.Getenv("SENDGRID_API_KEY"))
+	errorSettingKey := email.SetAPIKey(os.Getenv("SENDGRID_API_KEY"))
 	if errorSettingKey != nil {
 		log.Println(errorSettingKey)
 	}
-	email.SetFromName(os.Getenv("FROM_NAME"))
-	email.SetFromEmail(os.Getenv("FROM_EMAIL"))
 	errorSettingEmail := email.GridEmail(
-		"",
-		"",
+		os.Getenv("FROM_NAME"),
+		os.Getenv("FROM_EMAIL"),
 		"Test Purpose",
 		"Abhishek Mali",
 		"abhishek.m@simformsolutions.com",
@@ -53,7 +51,10 @@ func GridEmailExample() {
 
 func MailGunByExample() {
 	var email models.MailGun
-	email.SetPrivateAPIKey(os.Getenv("PRIVATE_KEY"))
+	createAPIErr := email.SetAPIKey(os.Getenv("PRIVATE_KEY"))
+	if createAPIErr != nil {
+		log.Println(createAPIErr)
+	}
 	email.SetDomainName(os.Getenv("DOMAIN_NAME"))
 	errorSettingEmail := email.MailGun("abhishek.m@simformsolutions.com", "Congratulations ", "<h1>This is the test</h1>", "kishan.m@simformsolutions.com")
 	if errorSettingEmail != nil {

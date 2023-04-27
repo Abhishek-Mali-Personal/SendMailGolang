@@ -8,7 +8,7 @@ import (
 )
 
 func ByMailGun(email models.MailGun) (msg, id string, err error) {
-	mg := mailgun.NewMailgun(email.GetDomainName(), email.GetPrivateAPIKey())
+	mg := mailgun.NewMailgun(email.GetDomainName(), email.GetAPIKey())
 	eMail := email.GetEmail()
 	sender := eMail["sender"]
 	subject := eMail["subject"]

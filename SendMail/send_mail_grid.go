@@ -9,7 +9,7 @@ import (
 )
 
 func ByGrid(email models.GridEmail) (response *rest.Response, err error) {
-	if len(email.GetSendGridAPIKey()) != 0 {
+	if len(email.GetAPIKey()) != 0 {
 		eMail := email.GetEmail()
 		from := mail.NewEmail(email.GetSenderName(), eMail["sender"])
 		subject := eMail["subject"]
@@ -25,7 +25,7 @@ func ByGrid(email models.GridEmail) (response *rest.Response, err error) {
 			htmlContent = eMail["body"]
 		}
 		message := mail.NewSingleEmail(from, subject, to, plainTextContent, htmlContent)
-		client := sendgrid.NewSendClient(email.GetSendGridAPIKey())
+		client := sendgrid.NewSendClient(email.GetAPIKey())
 		response, err = client.Send(message)
 	} else {
 		err = errors.EmptyAPIKeyError

@@ -1,10 +1,13 @@
 package models
 
+import "github.com/Abhishek-Mali-Simform/SendMailGolang/errors"
+
 type Email struct {
 	sender    string
 	subject   string
 	body      string
 	recipient string
+	apiKey    string
 }
 
 func (email *Email) Email(sender, subject, body, recipient string) {
@@ -36,6 +39,19 @@ func (email *Email) setSender(sender string) {
 	if len(sender) != 0 {
 		email.sender = sender
 	}
+}
+
+func (email *Email) SetAPIKey(apiKey string) (err error) {
+	if len(apiKey) != 0 {
+		email.apiKey = apiKey
+	} else {
+		err = errors.EmptyAPIKeyError
+	}
+	return
+}
+
+func (email *Email) GetAPIKey() string {
+	return email.apiKey
 }
 
 func (email *Email) GetSender() string {
