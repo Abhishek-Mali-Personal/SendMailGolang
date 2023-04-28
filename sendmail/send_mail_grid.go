@@ -28,7 +28,7 @@ func BySendGrid(email *models.GridEmail) (response *rest.Response, err error) {
 		client := sendgrid.NewSendClient(email.GetAPIKey())
 		response, err = client.Send(message)
 	} else {
-		err = errors.EmptyAPIKeyError
+		err = errors.ErrEmptyAPIKey
 	}
 	return
 }

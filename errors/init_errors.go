@@ -3,5 +3,5 @@ package errors
 import "errors"
 
 var (
-	EmptyAPIKeyError = errors.New("send grid api key empty")
+	ErrEmptyAPIKey = errors.New("send grid api key empty")
 )

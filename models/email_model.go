@@ -45,7 +45,7 @@ func (email *Email) SetAPIKey(apiKey string) (err error) {
 	if apiKey != "" {
 		email.apiKey = apiKey
 	} else {
-		err = errors.EmptyAPIKeyError
+		err = errors.ErrEmptyAPIKey
 	}
 	return
 }

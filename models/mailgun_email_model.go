@@ -12,7 +12,7 @@ func (email *MailGun) MailGun(sender, subject, body, recipient string) (err erro
 		email.setEmail(sender, subject, body, recipient)
 		err = nil
 	} else {
-		err = errors.EmptyAPIKeyError
+		err = errors.ErrEmptyAPIKey
 	}
 	return
 }

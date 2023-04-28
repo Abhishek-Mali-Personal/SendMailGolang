@@ -19,7 +19,7 @@ func (email *GridEmail) GridEmail(senderName, senderEmail, subject, recipientNam
 		email.setContentType(contentType)
 		err = nil
 	} else {
-		err = errors.EmptyAPIKeyError
+		err = errors.ErrEmptyAPIKey
 	}
 	return
 }
