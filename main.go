@@ -39,7 +39,7 @@ func GridEmailExample() {
 	if errorSettingEmail != nil {
 		log.Println(errorSettingEmail)
 	}
-	response, sendMailError := SendMail.ByGrid(email)
+	response, sendMailError := SendMail.BySendGrid(email)
 	if sendMailError != nil {
 		log.Println(sendMailError)
 	} else {

@@ -8,7 +8,7 @@ import (
 	"github.com/sendgrid/sendgrid-go/helpers/mail"
 )
 
-func ByGrid(email models.GridEmail) (response *rest.Response, err error) {
+func BySendGrid(email models.GridEmail) (response *rest.Response, err error) {
 	if len(email.GetAPIKey()) != 0 {
 		eMail := email.GetEmail()
 		from := mail.NewEmail(email.GetSenderName(), eMail["sender"])
