@@ -1,4 +1,4 @@
-package SendMail
+package sendmail
 
 import (
 	"github.com/Abhishek-Mali-Simform/SendMailGolang/errors"
@@ -8,8 +8,8 @@ import (
 	"github.com/sendgrid/sendgrid-go/helpers/mail"
 )
 
-func BySendGrid(email models.GridEmail) (response *rest.Response, err error) {
-	if len(email.GetAPIKey()) != 0 {
+func BySendGrid(email *models.GridEmail) (response *rest.Response, err error) {
+	if email.GetAPIKey() != "" {
 		eMail := email.GetEmail()
 		from := mail.NewEmail(email.GetSenderName(), eMail["sender"])
 		subject := eMail["subject"]

@@ -18,31 +18,31 @@ func (email *Email) Email(sender, subject, body, recipient string) {
 }
 
 func (email *Email) setRecipient(recipient string) {
-	if len(recipient) != 0 {
+	if recipient != "" {
 		email.recipient = recipient
 	}
 }
 
 func (email *Email) setBody(body string) {
-	if len(body) != 0 {
+	if body != "" {
 		email.body = body
 	}
 }
 
 func (email *Email) setSubject(subject string) {
-	if len(subject) != 0 {
+	if subject != "" {
 		email.subject = subject
 	}
 }
 
 func (email *Email) setSender(sender string) {
-	if len(sender) != 0 {
+	if sender != "" {
 		email.sender = sender
 	}
 }
 
 func (email *Email) SetAPIKey(apiKey string) (err error) {
-	if len(apiKey) != 0 {
+	if apiKey != "" {
 		email.apiKey = apiKey
 	} else {
 		err = errors.EmptyAPIKeyError

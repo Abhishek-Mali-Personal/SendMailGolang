@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/Abhishek-Mali-Simform/SendMailGolang/SendMail"
 	"github.com/Abhishek-Mali-Simform/SendMailGolang/models"
+	"github.com/Abhishek-Mali-Simform/SendMailGolang/sendmail"
 	"github.com/joho/godotenv"
 	"log"
 	"os"
@@ -17,8 +17,21 @@ func init() {
 }
 
 func main() {
-	//GridEmailExample()
-	MailGunByExample()
+	var mailChoiceLibrary int
+	fmt.Println("1. Send Grid Example")
+	fmt.Println("2. Mail Gun Example")
+	fmt.Println("Enter Your Choice: ")
+	numScanned, scanError := fmt.Scan(&mailChoiceLibrary)
+	if scanError != nil && numScanned != 1 {
+		log.Fatal(scanError)
+	}
+
+	switch mailChoiceLibrary {
+	case 1:
+		GridEmailExample()
+	case 2:
+		MailGunByExample()
+	}
 }
 
 func GridEmailExample() {
@@ -39,7 +52,7 @@ func GridEmailExample() {
 	if errorSettingEmail != nil {
 		log.Println(errorSettingEmail)
 	}
-	response, sendMailError := SendMail.BySendGrid(email)
+	response, sendMailError := sendmail.BySendGrid(&email)
 	if sendMailError != nil {
 		log.Println(sendMailError)
 	} else {
@@ -56,11 +69,16 @@ func MailGunByExample() {
 		log.Println(createAPIErr)
 	}
 	email.SetDomainName(os.Getenv("DOMAIN_NAME"))
-	errorSettingEmail := email.MailGun("abhishek.m@simformsolutions.com", "Congratulations ", "<h1>This is the test</h1>", "kishan.m@simformsolutions.com")
+	errorSettingEmail := email.MailGun(
+		"abhishek.m@simformsolutions.com",
+		"Congratulations ",
+		"<h1>This is the test</h1>",
+		"kishan.m@simformsolutions.com",
+	)
 	if errorSettingEmail != nil {
 		log.Println(errorSettingEmail)
 	}
-	resp, id, err := SendMail.ByMailGun(email)
+	resp, id, err := sendmail.ByMailGun(&email)
 	if err != nil {
 		log.Fatal(err)
 	}

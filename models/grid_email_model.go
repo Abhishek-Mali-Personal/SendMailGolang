@@ -12,7 +12,7 @@ type GridEmail struct {
 }
 
 func (email *GridEmail) GridEmail(senderName, senderEmail, subject, recipientName, recipientEmail, contentType, body string) (err error) {
-	if len(email.GetAPIKey()) != 0 {
+	if email.GetAPIKey() != "" {
 		email.SetSenderName(senderName)
 		email.setRecipientName(recipientName)
 		email.setEmail(senderEmail, subject, body, recipientEmail)
@@ -25,15 +25,15 @@ func (email *GridEmail) GridEmail(senderName, senderEmail, subject, recipientNam
 }
 
 func (email *GridEmail) SetSenderName(senderName string) {
-	if len(senderName) != 0 {
+	if senderName != "" {
 		email.senderName = senderName
-	} else if len(email.GetSenderName()) == 0 {
+	} else if email.GetSenderName() == "" {
 		email.senderName = "Unknown"
 	}
 }
 
 func (email *GridEmail) setRecipientName(recipientName string) {
-	if len(recipientName) != 0 {
+	if recipientName != "" {
 		email.recipientName = recipientName
 	} else {
 		email.recipientName = "Unknown"
@@ -41,13 +41,13 @@ func (email *GridEmail) setRecipientName(recipientName string) {
 }
 
 func (email *GridEmail) setContentType(contentType string) {
-	if len(contentType) != 0 {
+	if contentType != "" {
 		email.contentType = contentType
 	}
 }
 
 func (email *GridEmail) setEmail(sender, subject, body, recipient string) {
-	if len(sender) != 0 && len(subject) != 0 && len(body) != 0 && len(recipient) != 0 {
+	if sender != "" && subject != "" && body != "" && recipient != "" {
 		email.Email.Email(sender, subject, body, recipient)
 	}
 }

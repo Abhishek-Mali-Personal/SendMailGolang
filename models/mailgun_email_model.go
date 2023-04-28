@@ -8,7 +8,7 @@ type MailGun struct {
 }
 
 func (email *MailGun) MailGun(sender, subject, body, recipient string) (err error) {
-	if len(email.GetAPIKey()) != 0 {
+	if email.GetAPIKey() != "" {
 		email.setEmail(sender, subject, body, recipient)
 		err = nil
 	} else {
@@ -18,13 +18,13 @@ func (email *MailGun) MailGun(sender, subject, body, recipient string) (err erro
 }
 
 func (email *MailGun) SetDomainName(domainName string) {
-	if len(domainName) != 0 {
+	if domainName != "" {
 		email.domainName = domainName
 	}
 }
 
 func (email *MailGun) setEmail(sender, subject, body, recipient string) {
-	if len(sender) != 0 && len(subject) != 0 && len(body) != 0 && len(recipient) != 0 {
+	if sender != "" && subject != "" && body != "" && recipient != "" {
 		email.Email.Email(sender, subject, body, recipient)
 	}
 }

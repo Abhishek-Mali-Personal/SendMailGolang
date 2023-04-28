@@ -1,4 +1,4 @@
-package SendMail
+package sendmail
 
 import (
 	"context"
@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func ByMailGun(email models.MailGun) (msg, id string, err error) {
+func ByMailGun(email *models.MailGun) (msg, id string, err error) {
 	mg := mailgun.NewMailgun(email.GetDomainName(), email.GetAPIKey())
 	eMail := email.GetEmail()
 	sender := eMail["sender"]
